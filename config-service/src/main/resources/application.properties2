@@ -1,0 +1,20 @@
+spring.application.name=config-service
+server.port=8012
+
+spring.cloud.config.server.git.url=https://github.com/Gondagar/udemy-configuration.git
+
+spring.profiles.active=git
+
+#spring.cloud.config.server.git.uri: file://Users/serfer/Documents/Project/cloud-starter/configs/udemy-configuration
+spring.cloud.config.server.git.username=serhey.moskalenko@gmail.com
+spring.cloud.config.server.git.password=Fkg7h4f3$
+spring.cloud.config.server.git.clone-on-start=true
+spring.cloud.config.server.git.skip-ssl-validation=true
+
+management.endpoints.web.exposure.include=bus-refresh
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5762
+spring.rabbitmq.password=guest
+spring.rabbitmq.username=guest
+

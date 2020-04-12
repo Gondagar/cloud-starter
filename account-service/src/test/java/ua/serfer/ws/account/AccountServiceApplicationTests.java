@@ -1,10 +1,10 @@
-package ua.serfer.cloud.cloudstarter;
+package ua.serfer.ws.account;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CloudStarterApplicationTests {
+class AccountServiceApplicationTests {
 
     @Test
     void contextLoads() {

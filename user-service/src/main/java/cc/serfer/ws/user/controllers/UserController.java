@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/status/check")
     public String status(){
-        return "Working on port " + env.getProperty("local.server.port");
+        return "Working on port " + env.getProperty("local.server.port") + " and my message " + env.getProperty("my.message");
     }
 
 

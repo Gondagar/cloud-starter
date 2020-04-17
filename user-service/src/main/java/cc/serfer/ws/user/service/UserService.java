@@ -3,21 +3,30 @@ package cc.serfer.ws.user.service;
 import cc.serfer.ws.user.model.UserEntity;
 import cc.serfer.ws.user.repository.UserRepository;
 import cc.serfer.ws.user.security.UserDetailsIml;
+import cc.serfer.ws.user.transfer.AlbumResponseModel;
 import cc.serfer.ws.user.transfer.CreateUserRequestModel;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
-
+@Slf4j
 public class UserService implements UserDetailsService {
 
     @Autowired
@@ -27,7 +36,16 @@ public class UserService implements UserDetailsService {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
-    public UserEntity createUser(CreateUserRequestModel userDto){
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Autowired
+    AlbumServiceClient albumServiceClient;
+
+    @Value("${albums.url}")
+    String albumUrlRaw;
+
+    public UserEntity createUser(CreateUserRequestModel userDto) {
 
         UserEntity newUser = UserEntity.builder()
                 .firstName(userDto.getFirstName())
@@ -39,7 +57,6 @@ public class UserService implements UserDetailsService {
                 .build();
 
         //ModelMapper modelMapper = new ModelMapper();
-
 
 
         UserEntity save = userRepository.save(newUser);
@@ -54,8 +71,35 @@ public class UserService implements UserDetailsService {
         return new UserDetailsIml(userEntity);
     }
 
-    public UserEntity getUser(String email){
+    public UserEntity getUserByEmail(String email) {
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
+
+
         return userEntity;
     }
+
+
+    public UserEntity getUserByUserId(String userId, String clientType) {
+        UserEntity userEntity = userRepository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException(userId));
+
+
+        if ("rest".equals(clientType)) {
+            String albumUrl = String.format(albumUrlRaw, userId);
+            ResponseEntity<List<AlbumResponseModel>> albumsListResponse = restTemplate.exchange(albumUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<AlbumResponseModel>>() {
+            });
+            List<AlbumResponseModel> albumsList = albumsListResponse.getBody();
+            log.info("Used rest template client");
+
+            userEntity.setAlbums(albumsList);
+
+        } else if ("feign".equals(clientType)){
+            log.info("Used feign client");
+            List<AlbumResponseModel> albums = albumServiceClient.getAlbums(userId);
+            userEntity.setAlbums(albums);
+
+        }
+
+        return userEntity;
+    }
+
 }

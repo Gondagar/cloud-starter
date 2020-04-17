@@ -33,6 +33,14 @@ public class UserController {
     }
 
 
+
+    @GetMapping("/{userId}/{clientType}")
+    public ResponseEntity<UserEntity> GetUser(@PathVariable(name = "userId") String id, @PathVariable String clientType){
+        UserEntity userByUserId = userService.getUserByUserId(id, clientType);
+        return new ResponseEntity<>(userByUserId,HttpStatus.OK);
+    }
+
+
     @PostMapping(path = "/registration",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
                  produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public  ResponseEntity createUser(@Valid @RequestBody CreateUserRequestModel  userDetails){

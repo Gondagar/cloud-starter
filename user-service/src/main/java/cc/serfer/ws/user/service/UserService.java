@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @Service
 @Slf4j
@@ -79,24 +80,36 @@ public class UserService implements UserDetailsService {
     }
 
 
+
     public UserEntity getUserByUserId(String userId, String clientType) {
         UserEntity userEntity = userRepository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException(userId));
 
 
         if ("rest".equals(clientType)) {
-            String albumUrl = String.format(albumUrlRaw, userId);
-            ResponseEntity<List<AlbumResponseModel>> albumsListResponse = restTemplate.exchange(albumUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<AlbumResponseModel>>() {
-            });
-            List<AlbumResponseModel> albumsList = albumsListResponse.getBody();
-            log.info("Used rest template client");
+            log.info("Used rest template client get info");
+            try {
+                String albumUrl = String.format(albumUrlRaw, userId);
+                ResponseEntity<List<AlbumResponseModel>> albumsListResponse = restTemplate.exchange(albumUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<AlbumResponseModel>>() {
+                });
+                List<AlbumResponseModel> albumsList = albumsListResponse.getBody();
+                userEntity.setAlbums(albumsList);
+            } catch (Exception e) {
+                log.error(e.getLocalizedMessage());
 
-            userEntity.setAlbums(albumsList);
+            }
 
-        } else if ("feign".equals(clientType)){
+
+        } else if ("feign".equals(clientType)) {
             log.info("Used feign client");
-            List<AlbumResponseModel> albums = albumServiceClient.getAlbums(userId);
-            userEntity.setAlbums(albums);
+            try {
+                log.info("Before calling albums Microservice");
+                List<AlbumResponseModel> albums = albumServiceClient.getAlbums(userId);
+                log.info("After calling albums Microservice");
+                userEntity.setAlbums(albums);
 
+            } catch (Exception e) {
+                log.error(e.getLocalizedMessage());
+            }
         }
 
         return userEntity;

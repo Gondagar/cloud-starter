@@ -26,6 +26,6 @@ target/
 /nbdist/
 /.nb-gradle/
 build/
-
+/Users/serfer/Documents/Project/cloud-starter/config-service/src/main/resources/config
 ### VS Code ###
 .vscode/

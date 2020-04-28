@@ -1,0 +1,6 @@
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+COPY renthash-club.jks /data/renthash-club.jks
+COPY UnlimitedJCEPolicyJDK8/* ./usr/lib/jvm/java-1.8-openjdk/jre/lib/security/
+COPY target/Config.jar Config.jar
+ENTRYPOINT ["java", "-Djava.security.egb=file:/dev/./urandom", "-jar", "Config.jar"]

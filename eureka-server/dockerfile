@@ -1,0 +1,3 @@
+FROM openjdk:8-jdk-alpine
+COPY target/Eureka.jar Eureka.jar
+ENTRYPOINT ["java", "-jar", "Eureka.jar"]

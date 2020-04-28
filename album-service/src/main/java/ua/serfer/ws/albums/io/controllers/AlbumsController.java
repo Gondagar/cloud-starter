@@ -7,6 +7,7 @@ package ua.serfer.ws.albums.io.controllers;
 
 import ua.serfer.ws.albums.data.AlbumEntity;
 import ua.serfer.ws.albums.service.AlbumsService;
+import ua.serfer.ws.albums.service.AlbumsServiceImpl;
 import ua.serfer.ws.albums.ui.model.AlbumResponseModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ import org.slf4j.LoggerFactory;
 public class AlbumsController {
     
     @Autowired
-    AlbumsService albumsService;
+    AlbumsServiceImpl albumsService;
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @GetMapping( 
             produces = { 

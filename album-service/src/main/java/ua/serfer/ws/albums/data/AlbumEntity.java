@@ -14,18 +14,18 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "albums")
+//@Entity
+//@Table(name = "albums")
 public class AlbumEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+  //  @Id
+  //  @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "album_id")
+  //  @Column(name = "album_id")
     private String albumId;
 
-    @Column(name = "user_id")
+  //  @Column(name = "user_id")
     private String userId; 
 
     private String name;

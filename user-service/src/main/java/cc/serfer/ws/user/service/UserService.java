@@ -30,6 +30,10 @@ import java.util.logging.Logger;
 @Slf4j
 public class UserService implements UserDetailsService {
 
+   /* @Autowired
+    AlbumServiceClient albumServiceClient;*/
+
+
     @Autowired
     UserRepository userRepository;
 
@@ -39,9 +43,6 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     RestTemplate restTemplate;
-
-    @Autowired
-    AlbumServiceClient albumServiceClient;
 
     @Value("${albums.url}")
     String albumUrlRaw;
@@ -99,7 +100,7 @@ public class UserService implements UserDetailsService {
             }
 
 
-        } else if ("feign".equals(clientType)) {
+        } /*else if ("feign".equals(clientType)) {
             log.info("Used feign client");
             try {
                 log.info("Before calling albums Microservice");
@@ -110,7 +111,7 @@ public class UserService implements UserDetailsService {
             } catch (Exception e) {
                 log.error(e.getLocalizedMessage());
             }
-        }
+        }*/
 
         return userEntity;
     }

@@ -1,5 +1,5 @@
 package cc.serfer.ws.user.shared;
-
+/*
 import com.netflix.hystrix.exception.HystrixBadRequestException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
@@ -32,3 +32,4 @@ public class FeignErrorDecoder implements ErrorDecoder {
         return null;
     }
 }
+*/

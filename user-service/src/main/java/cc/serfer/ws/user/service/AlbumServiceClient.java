@@ -1,5 +1,5 @@
 package cc.serfer.ws.user.service;
-
+/*
 import cc.serfer.ws.user.transfer.AlbumResponseModel;
 import feign.FeignException;
 import feign.hystrix.FallbackFactory;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.ArrayList;
 import java.util.List;
 
-@FeignClient(name = "albums-ws", /*fallback = AlbumsFallback.class*/ fallbackFactory = AlbumsFallbackFactory.class)
+@FeignClient(name = "albums-ws", *//*fallback = AlbumsFallback.class*//* fallbackFactory = AlbumsFallbackFactory.class)
 public interface AlbumServiceClient {
 
 
@@ -58,7 +58,7 @@ class AlbumsServiceClientFallback implements AlbumServiceClient {
 
 ///////////////////////////////////////////////////////////
 
-/*
+*//*
 @Component
 class AlbumsFallback implements AlbumServiceClient {
 

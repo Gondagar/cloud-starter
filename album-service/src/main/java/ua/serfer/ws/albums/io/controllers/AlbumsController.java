@@ -67,7 +67,7 @@ public class AlbumsController {
         }
 
 
-        System.out.println("headers " + map);
+        logger.info("Headers {}", map);
         return new ResponseEntity(map, HttpStatus.OK);
     }
 

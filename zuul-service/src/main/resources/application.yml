@@ -1,0 +1,83 @@
+#zuul:
+#  routes:
+#    auth-service:
+#      path: /auth/**
+#      serviceId: auth-service
+#    foo-service:
+#      path: /foo/**
+#      serviceId: foo-service
+#  ratelimit:
+#    behind-proxy: false
+#    response-headers: standard
+#    enabled: true
+#    repository: REDIS
+#    default-policy-list: #optional - will apply unless specific policy exists
+#      - limit: 20 #optional - request number limit per refresh interval window
+#        #        quota: 1000 #optional - request time limit per refresh interval window (in seconds)
+#        refresh-interval: 60 #default value (in seconds)
+#        type: #optional
+#          - origin
+#    policy-list:
+#      serviceWeather:
+#        - limit: 2 #optional - request number limit per refresh interval window
+#          #          quota: 1000 #optional - request time limit per refresh interval window (in seconds)
+#          refresh-interval: 60 #default value (in seconds)
+#          type:
+#            - origin
+#      serviceSpaceship:
+#        - limit: 4 #optional - request number limit per refresh interval window
+#          #          quota: 1000 #optional - request time limit per refresh interval window (in seconds)
+#          refresh-interval: 60 #default value (in seconds)
+#          type:
+#            - origin
+#
+#  strip-prefix: false
+
+
+
+server:
+  port: 8011
+zuul:
+  prefix: /api
+  routes:
+    auth-service:
+      path: /auth/**
+      serviceId: auth-service
+    albums-service:
+      path: /album/**
+      serviceId: albums-service
+  ratelimit:
+    behind-proxy: true
+    response-headers: standard
+    enabled: true
+    repository: REDIS
+    policy-list:
+      auth-service:
+        - limit: 4
+          refresh-interval: 15
+          type:
+            - origin
+  strip-prefix: false
+
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "health, prometheus, routes"
+    enabled-by-default: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.1.49:8010/eureka/
+
+spring:
+  rabbitmq:
+    host: 192.168.1.49
+    port: 5672
+    password: guest
+    username: guest

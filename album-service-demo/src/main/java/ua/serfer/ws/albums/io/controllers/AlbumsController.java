@@ -13,7 +13,8 @@ import ua.serfer.ws.albums.service.AlbumsService;
 import ua.serfer.ws.albums.service.AlbumsServiceImpl;
 import ua.serfer.ws.albums.ui.model.AlbumResponseModel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 
@@ -24,8 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/users")
@@ -55,21 +54,9 @@ public class AlbumsController {
     }
 
     @GetMapping(path = "/test", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity testDemo(HttpServletRequest request) {
-
-        Map<String, String> map = new HashMap<String, String>();
-
-        Enumeration headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String key = (String) headerNames.nextElement();
-            String value = request.getHeader(key);
-            map.put(key, value);
-        }
-
-
-        System.out.println("headers " + map);
-        return new ResponseEntity(map, HttpStatus.OK);
+    public ResponseEntity testDemo() {
+        System.out.println("Demo");
+        return new ResponseEntity("Demo", HttpStatus.OK);
     }
-
 
 }

@@ -1,0 +1,4 @@
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+COPY target/Albums-service.jar Albums-service.jar
+ENTRYPOINT ["java", "-jar", "Albums-service.jar"]
